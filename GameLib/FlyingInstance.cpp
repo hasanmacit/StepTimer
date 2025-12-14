@@ -2,14 +2,35 @@
 #include "../EterBase/StepTimer.h"
 
 //arat
+m_fStartTime=0.0f;
+
+//altına ekle
+m_fLastTime = 0.0f;
+
+//arat
+void CFlyingInstance::UpdateAttachInstance()
+
+//değiştir
+void CFlyingInstance::UpdateAttachInstance(float fElapsedTime)
+
+//arat
 		D3DXToRadian(m_pData->m_v3AngVel.y)*CTimer::Instance().GetElapsedSecond(),
 		D3DXToRadian(m_pData->m_v3AngVel.x)*CTimer::Instance().GetElapsedSecond(),
 		D3DXToRadian(m_pData->m_v3AngVel.z)*CTimer::Instance().GetElapsedSecond());
 
 //değiştir
-		D3DXToRadian(m_pData->m_v3AngVel.y)*DX::StepTimer::Instance().GetElapsedSeconds(),
-		D3DXToRadian(m_pData->m_v3AngVel.x)*DX::StepTimer::Instance().GetElapsedSeconds(),
-		D3DXToRadian(m_pData->m_v3AngVel.z)*DX::StepTimer::Instance().GetElapsedSeconds());
+		D3DXToRadian(m_pData->m_v3AngVel.y)*fElapsedTime,
+		D3DXToRadian(m_pData->m_v3AngVel.x)*fElapsedTime,
+		D3DXToRadian(m_pData->m_v3AngVel.z)*fElapsedTime);
+
+//arat
+bool CFlyingInstance::Update()
+{
+
+//altına ekle
+	float fElapsedTime = float(DX::StepTimer::Instance().GetTotalSeconds() - m_fLastTime);
+	m_fLastTime = DX::StepTimer::Instance().GetTotalSeconds();
+
 
 //arat
 float angle = (CTimer::Instance().GetCurrentSecond() - m_fStartTime)*2*3.1415926535897931f/rfad.fPeriod;
@@ -35,12 +56,25 @@ m_pData->m_fHomingStartTime + m_fStartTime < DX::StepTimer::Instance().GetTotalS
 	D3DXVECTOR3 v3Movement = m_v3Velocity * CTimer::Instance().GetElapsedSecond();
 
 //değiştir
-	m_v3Velocity += m_v3Accel*DX::StepTimer::Instance().GetElapsedSeconds();
-	m_v3Velocity.z+=m_pData->m_fGravity * DX::StepTimer::Instance().GetElapsedSeconds();
-	D3DXVECTOR3 v3Movement = m_v3Velocity * DX::StepTimer::Instance().GetElapsedSeconds();
+	m_v3Velocity += m_v3Accel*fElapsedTime;
+	m_v3Velocity.z+=m_pData->m_fGravity * fElapsedTime;
+	D3DXVECTOR3 v3Movement = m_v3Velocity * fElapsedTime;
+
+//arat
+UpdateAttachInstance();
+
+//değiştir
+UpdateAttachInstance(fElapsedTime);
 
 //arat
 m_fStartTime = CTimer::Instance().GetCurrentSecond();
 
 //değiştir
-m_fStartTime = DX::StepTimer::Instance().GetTotalSeconds();
+	m_fStartTime = DX::StepTimer::Instance().GetTotalSeconds();
+	m_fLastTime = DX::StepTimer::Instance().GetTotalSeconds();
+
+//arat
+UpdateAttachInstance();
+
+//değiştir
+UpdateAttachInstance(0.0f);

@@ -5,4 +5,5 @@
 CAccountConnector			m_kAccountConnector;
 
 //ekle
-DX::StepTimer				m_timer;
+
+DX::StepTimer				m_timer2;

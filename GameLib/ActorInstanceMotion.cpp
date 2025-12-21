@@ -1,19 +1,10 @@
-//arat
-	else
-	{
-		MotionEventProcess();
-		SoundEventProcess(!isPC);
+//ARAT
+void CActorInstance::CurrentMotionProcess()
+//İçinde Bul
+    if (!isLooping)
+    {
 
-		++m_kCurMotNode.dwcurFrame;
-	}
+//Altına ekle
 
-//değiştir
-	else
-	{
-		DWORD dwNextFrame = DWORD(GetAttackingElapsedTime() * g_fGameFPS);
-		for (; m_kCurMotNode.dwcurFrame < dwNextFrame; ++m_kCurMotNode.dwcurFrame)
-		{
-			MotionEventProcess();
-			SoundEventProcess(TRUE);
-		}
-	}
+        if (m_kCurMotNode.fStartTime <= 0.0f)
+            m_kCurMotNode.fStartTime = fCurrentTime;
